@@ -68,8 +68,56 @@ const MOOD_TYPES = {
     emoji: "🍃",
     desc: "今天的心情像是一陣溫和的微風，平靜、自在且踏實。沒有太大的情緒起伏，這種歲月靜好的狀態讓你感到非常舒服與放鬆。",
     getAdvice: (partnerName) => `另一半今天處於非常和諧平靜的狀態。這時候不需要特別的驚喜或大餐，陪在 ${partnerName} 身邊，一起看本書、聽聽音樂，享受簡單而溫馨的共處時光就很完美了。☕`
-  }
-};
+  },
+
+  MELTING: {
+    name: "融化史萊姆 🫠",
+    emoji: "🫠",
+    desc: "今天能量超低，極度懶散。你現在只想跟地板或沙發融為一體，進入終極躺平待機狀態，任何指令都無法讓你移動分毫。",
+    getAdvice: (partnerName) => `對方現在是極度懶散的史萊姆狀態！千萬不要給 ${partnerName} 任何指令或要求，默默把零食和電視遙控器遞到他/她手邊，讓他/她原地安心融化放空就好！🫠`
+  },
+  DRAMATIC: {
+    name: "小抓馬劇場 🎭",
+    emoji: "🎭",
+    desc: "今天你的內心深處正上演著高潮迭起的八點檔小劇場！情緒飽滿、能量充足，雖然有點小焦慮，但超級渴望另一半的極致關注與配合演出。",
+    getAdvice: (partnerName) => `對方今天內心戲非常多，正需要你的高度關注！無論 ${partnerName} 此時說什麼，請都帶著無比誇張的同理心點頭贊同，並配合他/她的演出，給他/她滿滿的戲劇化呵護！🍿`
+  },
+  FOODIE_MONSTER: {
+    name: "餓鬼大爆發 🦖",
+    emoji: "🦖",
+    desc: "警報！你現在正處於餓到發脾氣（Hangry）的極限狀態！雖然體力能量還有，但根本沒心思談情說愛，滿腦子只渴望著大口吃肉與澱粉！",
+    getAdvice: (partnerName) => `注意！${partnerName} 今天正被餓鬼附身！此時**千萬不要問『等一下吃什麼』**，那會讓他/她更煩躁。請直接叫外送或帶 ${partnerName} 去吃他/她最愛的食物，食物是拯救世界的唯一鑰匙！🍕`
+  },
+  SPOILEE: {
+    name: "小傲嬌公主/王子 👑",
+    emoji: "👑",
+    desc: "今天你的傲嬌度與尊貴度雙雙破表！心裡超級渴望被另一半極致寵愛、當作皇室對待，卻又不想主動說出口，正用小眼神暗中觀察對方的表現。",
+    getAdvice: (partnerName) => `今天請主動提供皇家級服務！把 ${partnerName} 當成尊貴的殿下，端茶水、捶背、甜言蜜語一應俱全，大聲誇獎他/她，這會讓傲嬌的 ${partnerName} 內心甜到融化喔！👑💖`
+  },
+  GHOSTING: {
+    name: "放空小幽靈 👻",
+    emoji: "👻",
+    desc: "今天你的肉體雖然還留在地球上，但靈魂已經飄去外太空旅行了。大腦處於睡眠待機畫面，呈現極度放空、答非所問的幽靈狀態。",
+    getAdvice: (partnerName) => `另一半現在正處於靈魂出竅放空狀態。請輕輕在 ${partnerName} 眼前揮揮手，給他/她倒一杯熱茶。不需要逼 ${partnerName} 做任何決定或講話，靜靜地抱著他/她一起發呆就很美好了。🍃`
+  },
+  ADVENTURER: {
+    name: "搞怪探險家 🤪",
+    emoji: "🤪",
+    desc: "今天你大腦裡的頑皮細胞全數被喚醒了！精力充沛、搞怪點子滿滿，超想講一堆無厘頭冷笑話，或是調皮地戳戳另一半，跟對方一起胡鬧。",
+    getAdvice: (partnerName) => `接住 ${partnerName} 的梗！對方今天想跟你一起胡鬧，請陪他/她一起做鬼臉、互相操癢或講無厘頭的話。今天你們就是這間小樹屋最無厘頭的開心果拍檔！🦖✨`
+  },
+  OVERWORKED: {
+    name: "燃燒小蠟燭 🕯️",
+    emoji: "🕯️",
+    desc: "今天你的身體極度疲憊，背著極大的壓力，卻依然咬著牙想對另一半溫柔、為家裡付出。這是一顆正在燃燒自己、令人無比心疼的小蠟燭狀態。",
+    getAdvice: (partnerName) => `快幫 ${partnerName} 把蠟燭吹熄！走過去從背後摟住他/她，跟 ${partnerName} 說：『你已經做得夠好了，今天接下來交給我』。主動接手所有家事，給他/她一盆熱水泡腳吧！🛁🕯️`
+  },
+  SHY_LOVER: {
+    name: "羞答答羞羞草 🫣",
+    emoji: "🫣",
+    desc: "今天的心情甜甜的、軟綿綿的。你心裡極度想黏著另一半，卻又有點害羞矜持，只敢默默看著對方，或者在旁邊偷偷拉對方的衣角撒嬌。",
+    getAdvice: (partnerName) => `哎呀，${partnerName} 今天正羞澀地愛著你呢！不要對他/她做粗魯的舉動，請溫柔地拉起 ${partnerName} 的手放進口袋，輕聲對他/她說甜言蜜語，帶他/她窩在被子裡看一部溫馨喜劇吧！🎬💞`
+  }};
 
 // 豐富的 15 題心理測驗題庫
 const QUIZ_POOL = [
@@ -332,8 +380,347 @@ const QUIZ_POOL = [
       { text: "會幫忙噴火烤吐司、拍打翅膀散熱的噴火小幼龍", emoji: "🐉", scores: { energy: 40, stress: -15, loveIndex: 30 } },
       { text: "會在空中寫出浪漫字眼、為我們飛鴿傳信的送信白鴿", emoji: "🦅", scores: { energy: 20, stress: -20, loveIndex: 55 } }
     ]
-  }
-];
+  },
+  {
+    id: 27,
+    title: "半夜突然冷醒，發現另一半把大被子全捲走了...",
+    options: [
+      { text: "默默把對方當成被子抱上去，人肉保暖！", emoji: "🧸", scores: { energy: 10, stress: -20, loveIndex: 55 } },
+      { text: "使出床邊太極，大力把被子拉回來！", emoji: "🥋", scores: { energy: 30, stress: 20, loveIndex: 10 } },
+      { text: "算了...自己去櫃子拿另一條被子，明天再算帳。", emoji: "🚪", scores: { energy: -20, stress: 15, loveIndex: -5 } },
+      { text: "貼心地幫對方把露在外面的腳蓋好，自己縮成一團。", emoji: "🥺", scores: { energy: -10, stress: -10, loveIndex: 45 } }
+    ]
+  },
+  {
+    id: 28,
+    title: "一開冰箱，發現你珍藏一星期的限量甜點被另一半吃光了！",
+    options: [
+      { text: "大吼『這日子沒法過了』，要求今晚加倍奉還！", emoji: "🦖", scores: { energy: 45, stress: 35, loveIndex: -10 } },
+      { text: "藉機撒嬌，命令對方明天必須買兩倍好吃的來餵我！", emoji: "🍭", scores: { energy: 20, stress: -10, loveIndex: 50 } },
+      { text: "沒關係，他/她吃得開心就好，我再買新的。", emoji: "😇", scores: { energy: -10, stress: -20, loveIndex: 40 } },
+      { text: "默默關上冰箱，神情呆滯地回沙發躺平融化。", emoji: "🫠", scores: { energy: -45, stress: 20, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 29,
+    title: "如果有一台太空飛船，你最想和另一半去哪裡？",
+    options: [
+      { text: "去月球背面開個沒有地球人打擾的雙人營火晚會", emoji: "🌙", scores: { energy: 30, stress: -30, loveIndex: 45 } },
+      { text: "穿越黑洞，去看看未來 50 年後的彼此", emoji: "🌌", scores: { energy: 20, stress: 15, loveIndex: 35 } },
+      { text: "去土星的七彩光環上來一場刺激的飛艇極速漂移", emoji: "🚀", scores: { energy: 45, stress: -10, loveIndex: 20 } },
+      { text: "去沒有地心引力的休眠艙裡，無憂無慮大睡三天", emoji: "💤", scores: { energy: -40, stress: -40, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 30,
+    title: "另一半突然拿著剪刀，自信滿滿地說要幫你修剪劉海或頭髮？",
+    options: [
+      { text: "拼死抵抗！頭髮是我的命，想動它先過我這關！", emoji: "🙅‍♂️", scores: { energy: 45, stress: 35, loveIndex: -15 } },
+      { text: "閉上雙眼，帶著英勇就義的悲壯信任交給對方！", emoji: "🫣", scores: { energy: 15, stress: 25, loveIndex: 45 } },
+      { text: "好呀！就算剪壞了，也是我們獨一無二的搞怪回憶！", emoji: "✂️", scores: { energy: 35, stress: -15, loveIndex: 55 } },
+      { text: "隨便啦...我現在累得只想任人宰割，剪光也無所謂。", emoji: "🥱", scores: { energy: -50, stress: -20, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 31,
+    title: "一隻長相奇特但超萌的外星小生物突然降落陽台，想跟你們回家？",
+    options: [
+      { text: "超興奮！立刻教牠用魔法幫我們把碗洗乾淨！", emoji: "🪄", scores: { energy: 50, stress: -20, loveIndex: 25 } },
+      { text: "先緊張地上網查『外星狗會不會吃家裡的貓咪』？", emoji: "📱", scores: { energy: 25, stress: 30, loveIndex: -5 } },
+      { text: "抱起牠毛茸茸的身體，跟另一半一起幫牠取個蠢名字", emoji: "👽", scores: { energy: 20, stress: -25, loveIndex: 50 } },
+      { text: "太累了...外星生物能幫我上班嗎？不能的話先讓牠在沙發躺著", emoji: "🛌", scores: { energy: -40, stress: 10, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 32,
+    title: "大熱天兩個人去逛熱鬧的夜市，你的終極策略是？",
+    options: [
+      { text: "每一攤看起來都超誘人，從街頭大吃到街尾！", emoji: "🍟", scores: { energy: 50, stress: -20, loveIndex: 20 } },
+      { text: "迅速精準地只買兩個人最愛吃的那幾樣，回冷氣房享用", emoji: "🛍️", scores: { energy: 15, stress: -30, loveIndex: 35 } },
+      { text: "指令另一半去排隊買食物，我自己躲在陰涼處滑手機", emoji: "👑", scores: { energy: 20, stress: 15, loveIndex: 15 } },
+      { text: "好擠好熱...我現在只想打包一份冰品回被窩躺平", emoji: "🫠", scores: { energy: -45, stress: 25, loveIndex: 10 } }
+    ]
+  },
+  {
+    id: 33,
+    title: "一覺醒來，你發現自己說話都會自帶『搞笑綜藝配音效』？",
+    options: [
+      { text: "太棒了！立刻跑去跟另一半講一堆冷笑話，自帶音效超好笑！", emoji: "🤪", scores: { energy: 45, stress: -25, loveIndex: 40 } },
+      { text: "好吵喔，我想按靜音鍵，腦袋瓜現在嗡嗡作響", emoji: "🔇", scores: { energy: -35, stress: 35, loveIndex: -5 } },
+      { text: "對著鏡子給自己瘋狂演一齣悲劇，配上綜藝音效自己哈哈大笑", emoji: "🎭", scores: { energy: 35, stress: -15, loveIndex: 20 } },
+      { text: "默默用紙筆寫字，對另一半發送『大腦待機中』的眼神", emoji: "👻", scores: { energy: -20, stress: -10, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 34,
+    title: "如果今天有一項家事可以由『魔法自動完成』，你會選？",
+    options: [
+      { text: "洗碗與擦桌子，遠離手部油膩膩！", emoji: "🧼", scores: { energy: 20, stress: -35, loveIndex: 20 } },
+      { text: "曬衣服與摺衣服，那簡直是重複性的時間地獄", emoji: "👕", scores: { energy: 25, stress: -30, loveIndex: 20 } },
+      { text: "倒垃圾與廚餘分類，因為我現在一步都不想踏出家門！", emoji: "🗑️", scores: { energy: -20, stress: -40, loveIndex: 10 } },
+      { text: "由魔法幫另一半搥背，幫他/她徹底充電！", emoji: "🔋", scores: { energy: 10, stress: -15, loveIndex: 60 } }
+    ]
+  },
+  {
+    id: 35,
+    title: "兩個人要去『荒島荒野求生』度假一星期，你最想帶什麼？",
+    options: [
+      { text: "一台超大螢幕與兩支遊戲手把，在帳篷打電動度過！", emoji: "🎮", scores: { energy: 40, stress: -15, loveIndex: 35 } },
+      { text: "一整箱香氣四溢的零食與冰凍生啤酒，當吃貨！", emoji: "🍻", scores: { energy: 35, stress: -25, loveIndex: 20 } },
+      { text: "一頂超奢華的充氣雙人吊床，在海風中一覺不醒", emoji: "🏖️", scores: { energy: -40, stress: -45, loveIndex: 30 } },
+      { text: "一本厚厚的野外求生指南...因為我很怕另一半搞砸！", emoji: "📖", scores: { energy: 25, stress: 25, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 36,
+    title: "如果另一半突然變成一隻高度兩公尺的『胖企鵝』朝你走來？",
+    options: [
+      { text: "天啊！衝上去一把抱住牠胖乎乎白嫩嫩的肚子，好療癒！", emoji: "🐧", scores: { energy: 20, stress: -35, loveIndex: 65 } },
+      { text: "冷靜地去廚房拿出冰箱所有的魚，幫牠準備晚餐", emoji: "🐟", scores: { energy: 30, stress: 15, loveIndex: 25 } },
+      { text: "牽著牠胖乎乎的翅膀，在客廳搖搖擺擺跳一首踢踏舞！", emoji: "💃", scores: { energy: 40, stress: -10, loveIndex: 35 } },
+      { text: "默默把牠當成一個超大軟枕頭，靠在上面睡覺放空", emoji: "💤", scores: { energy: -45, stress: -25, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 37,
+    title: "在 38 度的大熱天，家裡的冷氣突然發出哀鳴壞掉了！",
+    options: [
+      { text: "立刻暴跳如雷，急得像熱鍋上的螞蟻，狂催冷氣師傅", emoji: "🥵", scores: { energy: 45, stress: 45, loveIndex: -10 } },
+      { text: "抱著另一半大喊：『我們快一起去百貨公司吹免費冷氣逃難！』", emoji: "🏬", scores: { energy: 35, stress: -15, loveIndex: 40 } },
+      { text: "搬出冰塊、電風扇，跟另一半玩古老消暑的吃西瓜比賽", emoji: "🍉", scores: { energy: 25, stress: -20, loveIndex: 45 } },
+      { text: "癱倒在地板上，熱到化成一灘沒有靈魂的史萊姆", emoji: "🫠", scores: { energy: -55, stress: 30, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 38,
+    title: "紀念日當天晚上，兩個人都忙了一整天，坐下來突然發現彼此都忘記買禮物了？",
+    options: [
+      { text: "完蛋了！內心感到無限自責與小失望，空氣瞬間凝固", emoji: "🥺", scores: { energy: 10, stress: 35, loveIndex: 10 } },
+      { text: "大笑一場！『不愧是我們！』，立刻拉著對方出門吃最貴的大餐慶祝！", emoji: "🥩", scores: { energy: 40, stress: -25, loveIndex: 45 } },
+      { text: "沒事啦，我們給彼此一個深情的吻，今天有你在身邊就是最好的禮物", emoji: "💋", scores: { energy: 15, stress: -30, loveIndex: 65 } },
+      { text: "太好了，不用花心思送禮，今晚我們可以安心叫外送一起躺平睡覺", emoji: "🛌", scores: { energy: -35, stress: -35, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 39,
+    title: "如果突然可以回到小學三年級，並且跟另一半當同班鄰座同學？",
+    options: [
+      { text: "每天在對方的課本上畫滿搞笑塗鴉，上課一直找他/她說悄悄話！", emoji: "🎒", scores: { energy: 45, stress: -20, loveIndex: 45 } },
+      { text: "在桌子中間畫一條超嚴格的『三八線』，誰越界就打一下！", emoji: "📏", scores: { energy: 35, stress: 20, loveIndex: 10 } },
+      { text: "默默在抽屜裡塞滿另一半愛吃的零食，羞答答地偷看他/她", emoji: "🫣", scores: { energy: 15, stress: -20, loveIndex: 55 } },
+      { text: "上課一直賴在桌上睡覺，命令另一半等一下幫我抄筆記", emoji: "🥱", scores: { energy: -40, stress: -10, loveIndex: 25 } }
+    ]
+  },
+  {
+    id: 40,
+    title: "在奇幻森林裡發現一座神祕許願池，你投下硬幣最想許的無厘頭願望是？",
+    options: [
+      { text: "讓我們一對眼就能立刻大笑，永遠不吵架的『幽默光環』", emoji: "✨", scores: { energy: 30, stress: -30, loveIndex: 50 } },
+      { text: "讓卡路里全部消失，我們可以每天吃炸雞薯條喝奶茶卻狂瘦！", emoji: "🍟", scores: { energy: 45, stress: -25, loveIndex: 15 } },
+      { text: "擁有一隻會自動幫我們掃地、摺衣服的魔法小精靈！", emoji: "🧚‍♀️", scores: { energy: 25, stress: -35, loveIndex: 25 } },
+      { text: "讓時間暫停，每天為我們多出 10 個小時的『無罪惡感賴床時間』", emoji: "🛌", scores: { energy: -40, stress: -40, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 41,
+    title: "如果可以獲得『隱形一小時』的超能力，你最想做什麼？",
+    options: [
+      { text: "悄悄跟在另一半後面，在他/她認真工作時突然抱住他/她嚇一跳！", emoji: "👻", scores: { energy: 45, stress: -15, loveIndex: 45 } },
+      { text: "溜進高級甜點店，把櫥窗裡平時捨不得買的蛋糕全部試吃一遍！", emoji: "🍰", scores: { energy: 40, stress: -25, loveIndex: 10 } },
+      { text: "偷偷躲在角落观察另一半在沒有我時到底會做些什麼傻事", emoji: "🕵️‍♂️", scores: { energy: 20, stress: 15, loveIndex: 30 } },
+      { text: "關掉手機，躲在房間的魔法角落，無憂無慮地安靜放空一小時", emoji: "🧘‍♂️", scores: { energy: -30, stress: -35, loveIndex: 10 } }
+    ]
+  },
+  {
+    id: 42,
+    title: "另一半正在浴室洗澡，突然用五音不全但極具熱情的歌聲瘋狂飆歌？",
+    options: [
+      { text: "立刻在門外跟著大合唱，把浴室當作我們的超熱血演唱會！", emoji: "🎤", scores: { energy: 50, stress: -20, loveIndex: 40 } },
+      { text: "默默拿出手機錄音，威脅他/她以後不幫我捶背就發給朋友們聽！", emoji: "📱", scores: { energy: 35, stress: 10, loveIndex: 25 } },
+      { text: "貼心地把大毛巾和溫熱的睡衣在門口準備好，笑著聽他/她搞笑", emoji: "🧖‍♀️", scores: { energy: 15, stress: -25, loveIndex: 55 } },
+      { text: "拿棉花塞住耳朵，嘆口氣：『這傢伙又開始發瘋了...』繼續倒頭睡", emoji: "😴", scores: { energy: -40, stress: 15, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 43,
+    title: "下班疲憊地回到家，看到廚房水槽裡堆了一疊中午沒洗的髒碗盤...",
+    options: [
+      { text: "火氣立刻上湧！默默碎碎念一邊用力洗碗，一邊等另一半回來講理！", emoji: "🌋", scores: { energy: 35, stress: 45, loveIndex: -15 } },
+      { text: "當作沒看見，拉起另一半的手：『今晚誰洗碗就輸了，先出去吃大餐！』", emoji: "🏃‍♀️", scores: { energy: 30, stress: -20, loveIndex: 40 } },
+      { text: "深呼吸...主動動手把它洗得乾乾淨淨，心想：『算了，對方今天也很累』", emoji: "🧹", scores: { energy: -15, stress: -10, loveIndex: 45 } },
+      { text: "完全失去動力，默默繞過去直接癱倒在沙發上，進入史萊姆模式", emoji: "🫠", scores: { energy: -50, stress: 30, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 44,
+    title: "另一半興致勃勃端上一碗親手做的湯，你喝了一口發現味道『極度鹹』！",
+    options: [
+      { text: "立刻表情扭曲，大喊：『寶貝你是不是把半罐鹽都倒進去了？！』", emoji: "😖", scores: { energy: 35, stress: 25, loveIndex: -5 } },
+      { text: "憋著笑一飲而盡！『超美味！』，然後狂喝三杯冰水來保命", emoji: "🥤", scores: { energy: 20, stress: -10, loveIndex: 60 } },
+      { text: "溫柔地告訴對方：『很有創意！但如果多加一碗水，我們今晚不用去洗腎會更好喔～』", emoji: "🍲", scores: { energy: 15, stress: -20, loveIndex: 45 } },
+      { text: "累到味覺失靈，毫無波瀾地喝下去：『有熱湯喝我就很感恩了...』", emoji: "🥱", scores: { energy: -35, stress: -15, loveIndex: 25 } }
+    ]
+  },
+  {
+    id: 45,
+    title: "如果另一半在情人節，突然送你一束用『大蒜與辣椒』做成的實用花束？",
+    options: [
+      { text: "太有創意了！今晚立刻拿它來煮一頓超香的麻辣蒜香大餐！", emoji: "🧄", scores: { energy: 40, stress: -20, loveIndex: 35 } },
+      { text: "傻在原地，嘴角抽搐，懷疑對方是不是在暗示我最近口臭？", emoji: "🌶️", scores: { energy: 25, stress: 25, loveIndex: 5 } },
+      { text: "狂拍一百張照片發到網路上，向大家炫耀我們家另一半獨特的幽默感！", emoji: "📸", scores: { energy: 45, stress: -10, loveIndex: 40 } },
+      { text: "嘆了口氣，心想：『好歹是個禮物...』，默默把它插進花瓶當作防蚊道具", emoji: "🍃", scores: { energy: -20, stress: -20, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 46,
+    title: "出門時發現手機突然徹底壞掉一天，完全無法與外界聯繫？",
+    options: [
+      { text: "天啊！焦慮到手抖，感覺被整個世界拋棄了，壓力爆棚！", emoji: "😱", scores: { energy: 40, stress: 50, loveIndex: -10 } },
+      { text: "太棒了！終於可以理直氣壯不看工作訊息，今天我要跟另一半黏在一起！", emoji: "👩‍❤️‍👨", scores: { energy: 30, stress: -35, loveIndex: 55 } },
+      { text: "正好，今天就出門去公園散步發呆，過一天純樸的無干擾小日子", emoji: "🌳", scores: { energy: -15, stress: -40, loveIndex: 15 } },
+      { text: "既然不能滑手機，那我今天要理所當然地睡 12 個小時！", emoji: "💤", scores: { energy: -45, stress: -30, loveIndex: 10 } }
+    ]
+  },
+  {
+    id: 47,
+    title: "你買了一件自己覺得超有個性、但造型『非常醜』的衣服，問另一半好看嗎？",
+    options: [
+      { text: "期待對方大肆誇獎！如果對方敢皺眉頭，就發動嘟嘴抗議！", emoji: "👑", scores: { energy: 30, stress: 15, loveIndex: 40 } },
+      { text: "其實我知道很怪，只是想穿給對方看，逗他/她哈哈大笑！", emoji: "🤡", scores: { energy: 45, stress: -20, loveIndex: 45 } },
+      { text: "認真地分析這件衣服的前衛設計，堅持自己的時尚品味", emoji: "🕶️", scores: { energy: 20, stress: 10, loveIndex: 10 } },
+      { text: "隨便啦...反正穿起來很舒服，醜不醜無所謂，我累得不想打扮了", emoji: "👕", scores: { energy: -35, stress: -20, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 48,
+    title: "突然發現自己統一發票中了一百萬元大獎！你的直覺第一反應是？",
+    options: [
+      { text: "立刻發出瘋狂大笑，打電話給另一半：『不用上班了！今晚吃滿漢全席！』", emoji: "💰", scores: { energy: 55, stress: -35, loveIndex: 35 } },
+      { text: "緊張兮兮，把發票藏在內褲抽屜深處，反覆確認是不是自己在作夢", emoji: "🕵️‍♀️", scores: { energy: 30, stress: 30, loveIndex: 5 } },
+      { text: "默默在心裡規劃，要用這筆錢帶另一半去一趟夢想已久的豪華極光之旅", emoji: "✈️", scores: { energy: 25, stress: -30, loveIndex: 55 } },
+      { text: "感覺這輩子的運氣都用光了，在沙發上呆滯躺平：『明天還是要洗碗...』", emoji: "🫠", scores: { energy: -30, stress: 10, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 49,
+    title: "閉上雙眼，回想你當初第一眼看到另一半時的直覺感覺？",
+    options: [
+      { text: "心跳漏了一拍，感覺這個人身上閃閃發光，就是他/她了！", emoji: "✨", scores: { energy: 25, stress: -25, loveIndex: 65 } },
+      { text: "嗯？這個人看起來有點傻傻的，不知道好不好相處？", emoji: "🤫", scores: { energy: 20, stress: -10, loveIndex: 30 } },
+      { text: "天啊，他/她身上有一種讓人安心、想一輩子賴在一起的感覺", emoji: "🏠", scores: { energy: -10, stress: -35, loveIndex: 60 } },
+      { text: "太久以前了...我現在大腦快燒壞了，想不起來啦！", emoji: "🤯", scores: { energy: -40, stress: 25, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 50,
+    title: "另一半突然邀你一起去上一堂極度需要柔軟度的『雙人瑜珈課』？",
+    options: [
+      { text: "太好玩了！準備在課堂上擺出各種滑稽姿勢逗另一半笑！", emoji: "🧘‍♂️", scores: { energy: 45, stress: -20, loveIndex: 35 } },
+      { text: "感到無比恐慌...我的筋骨硬得像鋼筋，今晚肯定會全身散架！", emoji: "🧱", scores: { energy: 25, stress: 35, loveIndex: 5 } },
+      { text: "溫馨牽手，把它當作增進我們心靈默契與身體信任的甜蜜體驗", emoji: "💞", scores: { energy: 15, stress: -25, loveIndex: 55 } },
+      { text: "搖頭拒絕：『我的靈魂現在已經在坐禪了，肉體就放過它吧...』", emoji: "🪨", scores: { energy: -45, stress: -15, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 51,
+    title: "今天早上一覺醒來，覺得喉嚨有點癢癢的，身體好像快感冒了...",
+    options: [
+      { text: "緊張警報拉響！立刻翻箱倒櫃吃各種保健食品，全副武裝防護！", emoji: "😷", scores: { energy: 25, stress: 35, loveIndex: 5 } },
+      { text: "藉機開啟『病嬌弱小模式』，黏在另一半懷裡撒嬌討要摸摸和熱水", emoji: "🥺", scores: { energy: -15, stress: -10, loveIndex: 60 } },
+      { text: "雖然累累的，但依然努力為另一半做早餐，不想讓對方擔心", emoji: "🍳", scores: { energy: -20, stress: 15, loveIndex: 45 } },
+      { text: "直接放棄戰鬥，喝杯熱水，把自己裹成一隻密不透風的冬眠蠶蛹", emoji: "🐛", scores: { energy: -50, stress: -30, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 52,
+    title: "咖啡店的櫥窗裡只剩下最後一塊你最愛的草莓蛋糕，但另一半也很想吃？",
+    options: [
+      { text: "『兩強相爭！』發動猜拳爭奪戰，願賭服輸，贏家全拿！", emoji: "✊", scores: { energy: 40, stress: 10, loveIndex: 20 } },
+      { text: "大方讓給對方吃，看著對方幸福的吃相，我也覺得心裡甜甜的", emoji: "🍰", scores: { energy: 10, stress: -25, loveIndex: 60 } },
+      { text: "切成完美的兩半，你一口我一口，一口蛋糕配一口對方的愛意", emoji: "🍴", scores: { energy: 20, stress: -20, loveIndex: 55 } },
+      { text: "隨便啦...我現在累得連嘴巴都不想動，對方全部吃掉就好", emoji: "🥱", scores: { energy: -35, stress: -15, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 53,
+    title: "如果未來人類要搬去火星居住，另一半興致勃勃邀你一起報名？",
+    options: [
+      { text: "太酷了！立刻報名，準備在火星的紅色沙丘上跟另一半種馬鈴薯！", emoji: "🪐", scores: { energy: 45, stress: -15, loveIndex: 35 } },
+      { text: "聽起來超危險...萬一宇宙飛船爆炸怎麼辦？我還是留在地球安全", emoji: "🙅‍♀️", scores: { energy: 20, stress: 30, loveIndex: 5 } },
+      { text: "只要能跟你在一起，去哪裡我都無所謂，就算是荒涼的太空深處", emoji: "🚀", scores: { energy: 10, stress: -30, loveIndex: 60 } },
+      { text: "搬去火星要坐飛船幾年？感覺好睏喔，我還是繼續在地球躺平吧", emoji: "🛌", scores: { energy: -40, stress: -20, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 54,
+    title: "如果突然穿越回 90 年代，沒有任何智慧型手機和網路，今晚你們會？",
+    options: [
+      { text: "翻出古老的錄音帶，在客廳跟另一半跟著經典老歌瘋狂亂舞！", emoji: "📻", scores: { energy: 45, stress: -25, loveIndex: 35 } },
+      { text: "大眼瞪小眼，感到極度無聊，不知道沒有滑手機要怎麼聊天", emoji: "💬", scores: { energy: 20, stress: 25, loveIndex: 5 } },
+      { text: "點起蠟燭，跟另一半徹夜暢聊彼此小時候最害羞幼稚的糗事", emoji: "🕯️", scores: { energy: 15, stress: -30, loveIndex: 55 } },
+      { text: "太好了！終於可以不被訊息打擾，安安靜靜、毫無干擾地大睡一場", emoji: "💤", scores: { energy: -40, stress: -40, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 55,
+    title: "回家的路上突然下大雨，但兩個人身上只有一把極小的折疊傘？",
+    options: [
+      { text: "把傘頂在兩個人頭上，在雨中瘋狂奔跑，像演青春偶像劇一樣大笑！", emoji: "🏃‍♂️", scores: { energy: 45, stress: -10, loveIndex: 45 } },
+      { text: "把傘大部分都往對方那邊撐，自己半邊肩膀濕透也心甘情願", emoji: "☔", scores: { energy: 10, stress: -25, loveIndex: 65 } },
+      { text: "完蛋了，渾身濕漉漉，今晚衣服很難乾，感到非常鬱悶煩躁", emoji: "😠", scores: { energy: 25, stress: 40, loveIndex: -5 } },
+      { text: "放棄掙扎，把傘收起來：『我們直接淋雨走回去吧，我累得撐不動了』", emoji: "🌧️", scores: { energy: -35, stress: -15, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 56,
+    title: "如果可以不花一分錢，把家裡裝飾成你夢想的奇特風格？",
+    options: [
+      { text: "鋪滿軟墊與大型滑梯、滿牆都是零食的『雙人遊樂場史萊姆風』！", emoji: "🛝", scores: { energy: 45, stress: -30, loveIndex: 40 } },
+      { text: "充滿高科技與發光線條、酷炫冰冷的『賽博朋克太空艙風』", emoji: "🛸", scores: { energy: 35, stress: 10, loveIndex: 15 } },
+      { text: "溫暖木質、點滿蠟燭、長滿綠色植栽的『北歐童話森林小木屋風』", emoji: "🏡", scores: { energy: -10, stress: -45, loveIndex: 45 } },
+      { text: "除了床和沙發什麼都不放，連大牆壁都是白色的『終極簡約放空風』", emoji: "⬜", scores: { energy: -35, stress: -35, loveIndex: 25 } }
+    ]
+  },
+  {
+    id: 57,
+    title: "今晚要跟另一半的朋友們進行第一次正式的聚會餐敘？",
+    options: [
+      { text: "超期待！準備了好多好玩的笑話，誓要在對方朋友前展現超強魅力！", emoji: "🥳", scores: { energy: 50, stress: 15, loveIndex: 30 } },
+      { text: "感到強烈的社交焦慮，緊張地一直確認自己的衣服跟頭髮有沒有亂", emoji: "😰", scores: { energy: 20, stress: 45, loveIndex: 10 } },
+      { text: "默默在另一半身邊，當個安靜得體又帶著微笑的靠山，陪著對方", emoji: "🤝", scores: { energy: -15, stress: -20, loveIndex: 45 } },
+      { text: "身體好累...我可以假裝臨時加班，自己在家裡躺平睡覺嗎？", emoji: "🛌", scores: { energy: -45, stress: 25, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 58,
+    title: "一回到家，發現家裡的貓咪把另一半最愛的真皮沙發抓出了好幾道大破洞！",
+    options: [
+      { text: "氣瘋了！立刻抓起貓咪進行嚴肅的思想教育，氣呼呼找另一半商量！", emoji: "🐱", scores: { energy: 40, stress: 40, loveIndex: -10 } },
+      { text: "立刻抱住另一半：『沒關係，舊的不去新的不來，我們剛好買新沙發！』", emoji: "🛋️", scores: { energy: 30, stress: -20, loveIndex: 45 } },
+      { text: "摸摸貓咪的頭：『好啦，至少牠抓得很開心...』默默去買皮革貼來修補", emoji: "🩹", scores: { energy: -10, stress: -25, loveIndex: 35 } },
+      { text: "癱倒在破沙發上，跟貓咪一起閉上眼睛：『就這樣吧，我也快散架了』", emoji: "👻", scores: { energy: -50, stress: 15, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 59,
+    title: "半夜做了一個超真實的惡夢，夢見另一半跟別人跑了，你被冷落在一旁？",
+    options: [
+      { text: "醒來火氣超大！立刻轉過身，趁對方在睡覺時輕輕捏住對方的鼻子報仇！", emoji: "😡", scores: { energy: 40, stress: 25, loveIndex: 35 } },
+      { text: "委屈得眼眶泛淚，縮進對方懷裡，拼命往他/她身上貼，尋求安全感", emoji: "🥺", scores: { energy: -15, stress: 15, loveIndex: 65 } },
+      { text: "拍拍胸口：『幸好只是個夢』，溫柔地在對方額頭上落下一吻", emoji: "😘", scores: { energy: -10, stress: -30, loveIndex: 55 } },
+      { text: "醒來覺得好睏，翻個身繼續睡：『夢裡他/她找了個更好的，我也樂得輕鬆...』", emoji: "😴", scores: { energy: -35, stress: -10, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 60,
+    title: "如果可以在大腦後方接上一條傳輸線，你最想傳輸給另一半的是？",
+    options: [
+      { text: "我所有大腦裡的搞怪、無厘頭想法，讓對方笑到肚子痛！", emoji: "🔌", scores: { energy: 45, stress: -20, loveIndex: 35 } },
+      { text: "此時此刻我累積了一整天的巨大工作壓力，讓對方替我分擔一下！", emoji: "🧠", scores: { energy: 30, stress: 40, loveIndex: 5 } },
+      { text: "我此生對你所有的溫柔、愛意與幸福感，毫無保留地傳過去！", emoji: "💖", scores: { energy: 15, stress: -35, loveIndex: 70 } },
+      { text: "一片空白的澄澈禪意...因為我現在腦袋已經累到完全無法運轉了", emoji: "🍃", scores: { energy: -50, stress: -40, loveIndex: 15 } }
+    ]
+  }];
 
 // ==========================================================================
 // 2. 音效系統 (Web Audio API 模擬 chimes & beeps)
@@ -865,18 +1252,40 @@ function calculateQuizResult() {
     const loveIndex = Math.max(5, Math.min(100, Math.round(50 + loveSum * scale)));
     
     // 心情判定邏輯樹
+        // 15種心情判定邏輯樹 (energy, stress, loveIndex 判定)
     let moodKey = "CALM";
     
     if (stress > 70) {
-      moodKey = energy < 45 ? "EXPLODING" : "GRUMPY";
+      if (energy < 40) {
+        moodKey = loveIndex > 65 ? "OVERWORKED" : "EXPLODING";
+      } else {
+        moodKey = loveIndex > 65 ? "DRAMATIC" : "GRUMPY";
+      }
     } else if (energy < 40) {
-      moodKey = loveIndex > 70 ? "NEED_HUG" : "TIRED";
-    } else if (loveIndex > 75) {
-      moodKey = "HAPPY_SWEET";
+      if (loveIndex > 70) {
+        moodKey = "NEED_HUG";
+      } else if (loveIndex < 35) {
+        moodKey = "MELTING";
+      } else {
+        moodKey = stress > 50 ? "TIRED" : "GHOSTING";
+      }
     } else if (energy > 75) {
-      moodKey = "ENERGY_FULL";
+      if (loveIndex > 75) {
+        moodKey = "HAPPY_SWEET";
+      } else if (loveIndex < 40) {
+        moodKey = "FOODIE_MONSTER";
+      } else {
+        moodKey = "ENERGY_FULL";
+      }
     } else {
-      moodKey = "CALM";
+      // 中度區間
+      if (loveIndex > 75) {
+        moodKey = energy > 55 ? "ADVENTURER" : "SPOILEE";
+      } else if (loveIndex > 55) {
+        moodKey = "SHY_LOVER";
+      } else {
+        moodKey = "CALM";
+      }
     }
     
     const finalMood = MOOD_TYPES[moodKey];

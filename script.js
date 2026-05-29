@@ -1003,12 +1003,24 @@ function syncCloudData(isSilent = false) {
         localStorage.removeItem("treehouse_partner_mood_today");
       }
       
-      // 2. 備份自己的今日心情到雲端資料（若本地被清除，可反向同步回來）
+      // 2. 更新自己的今日心情（以雲端為唯一真實狀態，若雲端清空或無資料，則本地也應重置要求重新測驗）
       const ownLatest = data.latest[ownRole];
-      if (ownLatest && (isToday(ownLatest.timestamp) || ownLatest.date === getTodayDateString()) && !APP_STATE.ownTodayMood) {
-        APP_STATE.ownTodayMood = ownLatest;
-        localStorage.setItem("treehouse_own_mood_today", JSON.stringify(ownLatest));
-        isDataUpdated = true;
+      if (ownLatest && (isToday(ownLatest.timestamp) || ownLatest.date === getTodayDateString())) {
+        const prevOwnMood = localStorage.getItem("treehouse_own_mood_today");
+        const nextOwnMoodStr = JSON.stringify(ownLatest);
+        
+        if (prevOwnMood !== nextOwnMoodStr) {
+          APP_STATE.ownTodayMood = ownLatest;
+          localStorage.setItem("treehouse_own_mood_today", nextOwnMoodStr);
+          isDataUpdated = true;
+        }
+      } else {
+        // 如果雲端今天沒有我的測驗紀錄（例如 Excel 內容被清空），則清空本地狀態，要求重新測驗
+        if (APP_STATE.ownTodayMood) {
+          APP_STATE.ownTodayMood = null;
+          localStorage.removeItem("treehouse_own_mood_today");
+          isDataUpdated = true;
+        }
       }
       
       // 3. 更新歷史紀錄

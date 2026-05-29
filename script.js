@@ -592,6 +592,7 @@ function findMoodKey(emoji) {
 // ==========================================================================
 function startQuizAdventure() {
   playSound('click');
+  navigateTo("quiz");
   APP_STATE.quizAnswers = [];
   APP_STATE.currentQuestionIdx = 0;
   

@@ -222,6 +222,116 @@ const QUIZ_POOL = [
       { text: "打開會彈出一個搞笑小丑的整人嚇人玩具", emoji: "🤡", scores: { energy: 45, stress: -10, loveIndex: 30 } },
       { text: "一整盒我最愛吃的高級手工榛果巧克力", emoji: "🍫", scores: { energy: 25, stress: -20, loveIndex: 40 } }
     ]
+  },
+  {
+    id: 16,
+    title: "如果另一半突然變成一隻巨型大貓熊朝你滾過來，你會？",
+    options: [
+      { text: "抱住牠毛茸茸的肚子，大字型跟牠一起滾！", emoji: "🐼", scores: { energy: 30, stress: -30, loveIndex: 45 } },
+      { text: "趕快去廚房拿一把新鮮竹筍餵牠吃！", emoji: "🎋", scores: { energy: 20, stress: -10, loveIndex: 25 } },
+      { text: "狂拍一百張照片發到網路上炫耀我們家的大熊貓！", emoji: "📸", scores: { energy: 40, stress: -5, loveIndex: 10 } },
+      { text: "當作沒看見，閉上眼睛在沙發上繼續躺著睡覺。", emoji: "💤", scores: { energy: -40, stress: -20, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 17,
+    title: "如果你可以用一個大自然元素代表此時你靈魂的狀態？",
+    options: [
+      { text: "熊熊燃燒、劈啪作響的溫暖柴火", emoji: "🔥", scores: { energy: 45, stress: 25, loveIndex: 15 } },
+      { text: "緩緩流動、拍打著沙灘的溫暖夏日海浪", emoji: "🌊", scores: { energy: -20, stress: -45, loveIndex: 25 } },
+      { text: "呼呼大作、在森林裡亂竄的強烈狂風", emoji: "🌪️", scores: { energy: 40, stress: 45, loveIndex: -15 } },
+      { text: "安靜躺在清澈溪流底部、長滿青苔的頑石", emoji: "🪨", scores: { energy: -40, stress: -30, loveIndex: 5 } }
+    ]
+  },
+  {
+    id: 18,
+    title: "如果你是魔法師，你最想把另一半暫時變成什麼小萌物？",
+    options: [
+      { text: "一隻耳朵軟軟、蹦蹦跳跳的雪白小兔子", emoji: "🐰", scores: { energy: 20, stress: -25, loveIndex: 50 } },
+      { text: "一隻戴著黑框眼鏡、看起來博學的貓頭鷹", emoji: "🦉", scores: { energy: 10, stress: -15, loveIndex: 25 } },
+      { text: "一隻浮在水面上、雙手拼命揉臉的超萌海獺", emoji: "🦦", scores: { energy: 30, stress: -30, loveIndex: 55 } },
+      { text: "一隻巴掌大、會呼呼噴出迷你小火苗的超萌小幼龍", emoji: "🦖", scores: { energy: 45, stress: -5, loveIndex: 35 } }
+    ]
+  },
+  {
+    id: 19,
+    title: "如果我們現在去奇幻森林探險，你直覺我們會遇到什麼？",
+    options: [
+      { text: "熱情邀請我們參加深夜花園舞會的森林精靈", emoji: "🧚‍♀️", scores: { energy: 40, stress: -20, loveIndex: 30 } },
+      { text: "一棵會結出各種口味巧克力冰淇淋的神奇大樹", emoji: "🌲", scores: { energy: 35, stress: -25, loveIndex: 15 } },
+      { text: "藏在樹洞裡、能帶領我們找到神秘寶藏的古老地圖", emoji: "🗺️", scores: { energy: 30, stress: 10, loveIndex: 25 } },
+      { text: "一個已經搭好、生著暖暖營火且放滿軟墊的豪華帳篷", emoji: "🏕️", scores: { energy: -30, stress: -40, loveIndex: 45 } }
+    ]
+  },
+  {
+    id: 20,
+    title: "在一個暖洋洋的午後，你的大腦此時最想聽什麼聲音？",
+    options: [
+      { text: "窗外滴滴答答、很有規律的午後療癒小雨聲", emoji: "🌧️", scores: { energy: -25, stress: -35, loveIndex: 10 } },
+      { text: "平底鍋上煎培根「滋滋作響」的極致誘人聲音", emoji: "🥓", scores: { energy: 35, stress: -15, loveIndex: 15 } },
+      { text: "另一半靠在肩膀上，像小貓般呼嚕呼嚕睡覺的聲音", emoji: "🐈", scores: { energy: -15, stress: -40, loveIndex: 60 } },
+      { text: "強烈帶感的電子舞曲，腦袋跟著瘋狂搖擺", emoji: "🎧", scores: { energy: 50, stress: 20, loveIndex: -5 } }
+    ]
+  },
+  {
+    id: 21,
+    title: "如果今天我們要挑選一件情侶睡衣，你最希望是哪種風格？",
+    options: [
+      { text: "有一條大尾巴、走起路來很滑稽的綠色暴龍連身裝", emoji: "🦖", scores: { energy: 40, stress: -15, loveIndex: 30 } },
+      { text: "摸起來滑溜溜、超有質感的高級冰絲絲綢套裝", emoji: "👚", scores: { energy: -15, stress: -30, loveIndex: 45 } },
+      { text: "隨便套一件對方寬寬大大的舊 T 恤，最放鬆溫馨", emoji: "👕", scores: { energy: -25, stress: -35, loveIndex: 50 } },
+      { text: "胸前有帥氣標誌、帶有發光披風的超級英雄戰服", emoji: "🦸‍♂️", scores: { energy: 45, stress: 15, loveIndex: 10 } }
+    ]
+  },
+  {
+    id: 22,
+    title: "如果一覺醒來，發現今天突然多出了 3 個小時的空白時光？",
+    options: [
+      { text: "毫無罪惡感地把頭埋進被窩裡，瘋狂賴床睡懶覺！", emoji: "🛌", scores: { energy: -45, stress: -40, loveIndex: 10 } },
+      { text: "一口氣把想玩的遊戲或熱門日劇進度狂追完畢！", emoji: "🎮", scores: { energy: 35, stress: -25, loveIndex: 15 } },
+      { text: "拉著另一半出門，漫無目的地牽著手在街上散步約會", emoji: "🛍️", scores: { energy: 30, stress: -20, loveIndex: 50 } },
+      { text: "大掃除模式發作，把家裡整理得一塵不染、整整齊齊", emoji: "🧼", scores: { energy: 25, stress: 25, loveIndex: 10 } }
+    ]
+  },
+  {
+    id: 23,
+    title: "如果另一半遞給你一個自製的「魔法遙控器」，你最想按哪個鍵？",
+    options: [
+      { text: "「讓另一半暫時安靜 5 分鐘」的療癒靜音鍵", emoji: "🔇", scores: { energy: -10, stress: 15, loveIndex: -20 } },
+      { text: "「讓無聊的上班或等待時間快轉」的魔幻加速鍵", emoji: "⏩", scores: { energy: 30, stress: 35, loveIndex: -5 } },
+      { text: "「給我們兩個體力與精力瞬間充飽 100%」的充電鍵", emoji: "🔋", scores: { energy: 50, stress: -30, loveIndex: 35 } },
+      { text: "「強制命令另一半立刻滾過來抱抱親親」的撒嬌鍵", emoji: "💖", scores: { energy: 15, stress: -20, loveIndex: 65 } }
+    ]
+  },
+  {
+    id: 24,
+    title: "如果有隻小精靈告訴你今晚的熱量由他買單！你最想大吃什麼？",
+    options: [
+      { text: "起司拉絲拉到天花板的超級海陸大披薩", emoji: "🍕", scores: { energy: 40, stress: -30, loveIndex: 15 } },
+      { text: "厚實多汁、香氣四溢的頂級熟成戰斧牛排", emoji: "🥩", scores: { energy: 45, stress: -20, loveIndex: 25 } },
+      { text: "堆滿草莓、巧克力與無數棉花糖的豪華巨無霸冰淇淋聖代", emoji: "🍨", scores: { energy: 30, stress: -35, loveIndex: 35 } },
+      { text: "精緻鮮美、入口即化的高級握壽司大拼盤", emoji: "🍣", scores: { energy: 20, stress: -25, loveIndex: 20 } }
+    ]
+  },
+  {
+    id: 25,
+    title: "如果您在此刻代表一種顏色，你直覺自己是什麼色？",
+    options: [
+      { text: "像向日葵般耀眼溫暖、充滿朝氣的亮黃色", emoji: "🟨", scores: { energy: 45, stress: -20, loveIndex: 20 } },
+      { text: "像深海般靜謐悠遠、能讓人沉澱放鬆的靜謐藍", emoji: "🟦", scores: { energy: -25, stress: -30, loveIndex: 10 } },
+      { text: "像火山岩漿般熱情奔放、充滿行動力的亮紅色", emoji: "🟥", scores: { energy: 50, stress: 25, loveIndex: 25 } },
+      { text: "像森林雨後般充滿生機、洗滌心靈的嫩綠色", emoji: "🟩", scores: { energy: -15, stress: -40, loveIndex: 15 } }
+    ]
+  },
+  {
+    id: 26,
+    title: "如果我們現在決定養一隻奇特的魔法寵物，您最想選哪一隻？",
+    options: [
+      { text: "會踩出七彩祥雲、散發蜜桃香氣的小獨角獸", emoji: "🦄", scores: { energy: 35, stress: -25, loveIndex: 45 } },
+      { text: "動作超慢、看著牠就會跟著一起發呆躺平的懶洋洋樹懶", emoji: "🦥", scores: { energy: -45, stress: -40, loveIndex: 15 } },
+      { text: "會幫忙噴火烤吐司、拍打翅膀散熱的噴火小幼龍", emoji: "🐉", scores: { energy: 40, stress: -15, loveIndex: 30 } },
+      { text: "會在空中寫出浪漫字眼、為我們飛鴿傳信的送信白鴿", emoji: "🦅", scores: { energy: 20, stress: -20, loveIndex: 55 } }
+    ]
   }
 ];
 
@@ -610,17 +720,17 @@ function startQuizAdventure() {
   // 過濾出尚未答過的題目
   let availableQuestions = QUIZ_POOL.filter(q => !usedIds.includes(q.id));
   
-  // 如果剩下的題目不足 3 題，表示題庫幾乎答過一輪，清空已答清單並重設
-  if (availableQuestions.length < 3) {
+  // 如果剩下的題目不足 5 題，表示題庫幾乎答過一輪，清空已答清單並重設
+  if (availableQuestions.length < 5) {
     usedIds = [];
     localStorage.removeItem("treehouse_used_quiz_ids");
     availableQuestions = [...QUIZ_POOL];
     showToast("小樹屋精靈：題庫已輪空，重啟全新一輪趣味測驗！✨", "success");
   }
   
-  // 從可用題目中隨機洗牌，抽選 3 題作為今天的測驗
+  // 從可用題目中隨機洗牌，抽選 5 題作為今天的測驗
   shuffleArray(availableQuestions);
-  APP_STATE.quizQuestions = availableQuestions.slice(0, 3);
+  APP_STATE.quizQuestions = availableQuestions.slice(0, 5);
   
   // 隱藏結果與計算畫面，顯示答題區
   document.getElementById("quizResultScreen").classList.add("hidden");
@@ -731,10 +841,10 @@ function calculateQuizResult() {
     resultScr.classList.remove("hidden");
     playSound('success');
     
-    // 心情分數累計（基底為50）
-    let energySum = 50;
-    let stressSum = 50;
-    let loveSum = 50;
+    // 心情分數累計（基底為50，並乘以係數以平衡答題數）
+    let energySum = 0;
+    let stressSum = 0;
+    let loveSum = 0;
     
     APP_STATE.quizAnswers.forEach(ans => {
       energySum += ans.scores.energy;
@@ -742,10 +852,10 @@ function calculateQuizResult() {
       loveSum += ans.scores.loveIndex;
     });
     
-    // 限制在 5 ~ 100% 之間
-    const energy = Math.max(5, Math.min(100, energySum));
-    const stress = Math.max(5, Math.min(100, stressSum));
-    const loveIndex = Math.max(5, Math.min(100, loveSum));
+    const scale = 3.0 / APP_STATE.quizQuestions.length; // 將分數縮放至原本 3 題的強度
+    const energy = Math.max(5, Math.min(100, Math.round(50 + energySum * scale)));
+    const stress = Math.max(5, Math.min(100, Math.round(50 + stressSum * scale)));
+    const loveIndex = Math.max(5, Math.min(100, Math.round(50 + loveSum * scale)));
     
     // 心情判定邏輯樹
     let moodKey = "CALM";

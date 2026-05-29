@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>夫妻心情配對小樹屋 | 記錄我們每天的溫馨小日常</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="專屬夫妻與情侶的即時心情互動小空間。透過趣味隨機心理測驗，同步彼此每日狀態，留下溫馨留言，讓另一半更懂你！">
+  <meta name="keywords" content="心情配對, 夫妻互動, 情侶互動, 心理測驗, Google Sheet 紀錄, 心情日記">
+  
+  <!-- FontAwesome for cute icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Outfit:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating background bubbles/hearts -->
+  <div class="floating-bg" id="floatingBg"></div>
+
+  <!-- Notification Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- HEADER (Visible in Dashboard & Settings) -->
+    <header class="app-header hidden" id="appHeader">
+      <div class="header-logo" id="logoClick">
+        <i class="fa-solid fa-tree"></i>
+        <span>心情小樹屋</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="btnDashboard" title="儀表板">
+          <i class="fa-solid fa-house-chimney"></i>
+        </button>
+        <button class="icon-btn" id="btnSettings" title="小樹屋設定">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEWS -->
+    <main class="main-content">
+      
+      <!-- 1. WELCOME VIEW (Role & Name Selection) -->
+      <section class="view-section active" id="viewWelcome">
+        <div class="welcome-card glass-card animate-fade-in">
+          <div class="logo-area animate-bounce-slow">
+            <div class="logo-circle">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <h1 class="welcome-title">心情配對小樹屋</h1>
+            <p class="welcome-subtitle">記錄我們每天的溫馨小日常 🏡</p>
+          </div>
+
+          <div class="step-card">
+            <h2 class="step-title"><span class="step-badge">Step 1</span> 請問您今天的主角是？</h2>
+            
+            <div class="role-selector">
+              <div class="role-card" data-role="husband" id="roleHusband">
+                <div class="role-icon-wrapper husband">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <span class="role-label">老公</span>
+              </div>
+              
+              <div class="role-card" data-role="wife" id="roleWife">
+                <div class="role-icon-wrapper wife">
+                  <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <span class="role-label">老婆</span>
+              </div>
+            </div>
+
+            <div class="nickname-group hidden" id="nicknameGroup">
+              <label for="inputNickname" class="input-label">請輸入您的專屬暱稱：</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-pen-nib input-icon"></i>
+                <input type="text" id="inputNickname" placeholder="例如：帥氣老公 / 甜心寶貝" maxlength="15">
+              </div>
+              <button class="primary-btn btn-pulse" id="btnStartAdventure">
+                開啟溫馨之旅 <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. DASHBOARD VIEW -->
+      <section class="view-section hidden" id="viewDashboard">
+        <div class="dashboard-grid">
+          
+          <!-- LEFT CARD: MY MOOD -->
+          <div class="glass-card mood-card own-mood-card animate-slide-up" style="--delay: 1;">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-face-smile-wink text-primary"></i> 我的今日狀態</h3>
+              <span class="user-badge own" id="myRoleBadge">自己</span>
+            </div>
+            
+            <!-- Case A: NOT taken the test yet -->
+            <div class="mood-placeholder" id="myMoodEmpty">
+              <div class="cute-graphic">
+                <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+              </div>
+              <p>您今天還沒有做測驗喔！</p>
+              <p class="sub-text">做幾道隨機題目，讓另一半知道你今天的心情吧！</p>
+              <button class="primary-btn btn-pulse" id="btnGoQuiz">
+                開始心情測驗 <i class="fa-solid fa-sparkles"></i>
+              </button>
+            </div>
+
+            <!-- Case B: ALREADY taken the test -->
+            <div class="mood-content hidden" id="myMoodActive">
+              <div class="mood-summary">
+                <div class="mood-emoji-large" id="myMoodEmoji">🥰</div>
+                <div>
+                  <h4 class="mood-title" id="myMoodName">超幸福的一天</h4>
+                  <p class="mood-time" id="myMoodTime">今天 12:30 已更新</p>
+                </div>
+              </div>
+
+              <!-- Mood meters -->
+              <div class="meters-container">
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-bolt text-energy"></i> 活力值</span>
+                    <span id="myEnergyVal">90%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-energy" id="myEnergyBar" style="width: 90%;"></div>
+                  </div>
+                </div>
+                
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-gauge-high text-stress"></i> 壓力值</span>
+                    <span id="myStressVal">20%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-stress" id="myStressBar" style="width: 20%;"></div>
+                  </div>
+                </div>
+
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-heart text-love"></i> 黏人指數</span>
+                    <span id="myLoveVal">85%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-love" id="myLoveBar" style="width: 85%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today's Whisper -->
+              <div class="whisper-box">
+                <div class="whisper-title"><i class="fa-solid fa-quote-left"></i> 今日悄悄話</div>
+                <p id="myMoodNote">今天天氣真好，想跟你一起去吃好吃的甜點！</p>
+              </div>
+
+              <div class="card-footer-actions">
+                <button class="secondary-btn btn-sm" id="btnRetakeQuiz">
+                  <i class="fa-solid fa-arrows-rotate"></i> 重新測驗
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT CARD: PARTNER'S MOOD -->
+          <div class="glass-card mood-card partner-mood-card animate-slide-up" style="--delay: 2;">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-heart text-love"></i> 另一半的今日狀態</h3>
+              <span class="user-badge partner" id="partnerRoleBadge">另一半</span>
+            </div>
+            
+            <!-- Case A: Partner has NOT taken the test yet -->
+            <div class="mood-placeholder" id="partnerMoodEmpty">
+              <div class="cute-graphic asleep">
+                <i class="fa-solid fa-moon animate-bounce-slow"></i>
+              </div>
+              <p id="partnerEmptyText">另一半今天還沒有做測驗喔...</p>
+              <p class="sub-text">您可以發送一個溫馨提醒，提醒他/她來測驗！</p>
+              <button class="secondary-btn btn-pulse" id="btnNudgePartner">
+                <i class="fa-solid fa-bell"></i> 敲敲門催一下 🛎️
+              </button>
+            </div>
+
+            <!-- Case B: Partner ALREADY taken the test -->
+            <div class="mood-content hidden" id="partnerMoodActive">
+              <div class="mood-summary">
+                <div class="mood-emoji-large" id="partnerMoodEmoji">🥱</div>
+                <div>
+                  <h4 class="mood-title" id="partnerMoodName">有點累累的</h4>
+                  <p class="mood-time" id="partnerMoodTime">今天 10:15 已更新</p>
+                </div>
+              </div>
+
+              <!-- Mood meters -->
+              <div class="meters-container">
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-bolt text-energy"></i> 活力值</span>
+                    <span id="partnerEnergyVal">30%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-energy" id="partnerEnergyBar" style="width: 30%;"></div>
+                  </div>
+                </div>
+                
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-gauge-high text-stress"></i> 壓力值</span>
+                    <span id="partnerStressVal">80%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-stress" id="partnerStressBar" style="width: 80%;"></div>
+                  </div>
+                </div>
+
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-heart text-love"></i> 黏人指數</span>
+                    <span id="partnerLoveVal">95%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-love" id="partnerLoveBar" style="width: 95%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Partner's Whisper -->
+              <div class="whisper-box partner-whisper">
+                <div class="whisper-title"><i class="fa-solid fa-quote-left"></i> 另一半寫給你</div>
+                <p id="partnerMoodNote">今天工作好多，腦袋快爆炸了，好想趕快回家抱抱你喔～</p>
+              </div>
+
+              <!-- Recommendation Card based on mood -->
+              <div class="recommendation-card" id="partnerAdviceBox">
+                <div class="advice-header">
+                  <i class="fa-solid fa-wand-magic-sparkles text-primary animate-pulse"></i>
+                  <span>給您的貼心互動小撇步：</span>
+                </div>
+                <p class="advice-content" id="partnerAdviceText">
+                  另一半今天壓力很大且非常渴望您的關心！建議您今天下班買份他最愛的甜點，並給他一個大大的熊抱，溫柔地聽他抱怨一下今天的工作，這會讓他心情瞬間好轉喔！🥰
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SYNC ACTION BUTTONS -->
+        <div class="sync-actions-container animate-slide-up" style="--delay: 3;">
+          <button class="primary-btn btn-sm" id="btnForceSync">
+            <i class="fa-solid fa-arrows-rotate animate-spin-hover"></i> 立即同步雙方最新心情
+          </button>
+          <span class="last-sync-time" id="lastSyncText">尚未進行雲端同步</span>
+        </div>
+
+        <!-- HISTORY TIMELINE -->
+        <div class="glass-card history-card animate-slide-up" style="--delay: 4;">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-clock-rotate-left text-primary"></i> 我們的溫馨互動歷史 (最近紀錄)</h3>
+          </div>
+          
+          <div class="history-list-placeholder" id="historyEmpty">
+            <i class="fa-solid fa-feather-pointed"></i>
+            <p>目前還沒有任何歷史紀錄喔！開始測驗並串接 Google 試算表來累積生活足跡吧！</p>
+          </div>
+
+          <div class="history-timeline hidden" id="historyTimeline">
+            <!-- Dynamic entries here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. QUIZ VIEW -->
+      <section class="view-section hidden" id="viewQuiz">
+        <div class="quiz-container glass-card">
+          
+          <!-- Quiz Header & Progress -->
+          <div class="quiz-header">
+            <button class="back-btn" id="btnExitQuiz"><i class="fa-solid fa-chevron-left"></i> 放棄測驗</button>
+            <div class="quiz-progress-wrapper">
+              <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quizProgressFill" style="width: 0%;"></div>
+                <div class="quiz-progress-heart" id="quizProgressHeart" style="left: 0%;"><i class="fa-solid fa-heart"></i></div>
+              </div>
+              <span class="quiz-progress-text" id="quizProgressText">第 1 / 3 題</span>
+            </div>
+          </div>
+
+          <!-- Question Cards Container -->
+          <div class="question-cards-wrapper" id="questionContainer">
+            <!-- Dynamic active question card will be generated here -->
+          </div>
+
+          <!-- Loading Result Screen (Hidden by default) -->
+          <div class="loading-result-screen hidden" id="quizLoadingScreen">
+            <div class="loading-magic">
+              <i class="fa-solid fa-wand-magic-sparkles spin-magic"></i>
+              <div class="sparkle s1"><i class="fa-solid fa-star"></i></div>
+              <div class="sparkle s2"><i class="fa-solid fa-heart"></i></div>
+              <div class="sparkle s3"><i class="fa-solid fa-star"></i></div>
+            </div>
+            <h3>正在調配您的今日心情能量水...</h3>
+            <p>小樹屋精靈正在仔細分析您的選擇 🪄</p>
+          </div>
+
+          <!-- Quiz Result Card (Hidden by default) -->
+          <div class="result-card-wrapper hidden" id="quizResultScreen">
+            <div class="confetti-explosion" id="confettiContainer"></div>
+            
+            <h2 class="result-greet">✨ 您的今日心情出爐囉！ ✨</h2>
+            
+            <div class="result-card glass-card">
+              <div class="result-emoji" id="resEmoji">🥳</div>
+              <h3 class="result-title" id="resMoodName">電力滿載的開心果</h3>
+              <p class="result-desc" id="resMoodDesc">今天你整個人充滿能量，心情就像是晴朗無雲的春日！你準備好散發快樂與活力，給另一半滿滿的溫馨擁抱了嗎？</p>
+              
+              <div class="meters-container">
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-bolt text-energy"></i> 活力值</span>
+                    <span id="resEnergyVal">95%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-energy" id="resEnergyBar" style="width: 95%;"></div>
+                  </div>
+                </div>
+                
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-gauge-high text-stress"></i> 壓力值</span>
+                    <span id="resStressVal">10%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-stress" id="resStressBar" style="width: 10%;"></div>
+                  </div>
+                </div>
+
+                <div class="meter-item">
+                  <div class="meter-labels">
+                    <span><i class="fa-solid fa-heart text-love"></i> 黏人指數</span>
+                    <span id="resLoveVal">80%</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill bg-love" id="resLoveBar" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message Input inside result to post to sheet -->
+              <div class="result-note-area">
+                <label for="resNote" class="input-label"><i class="fa-solid fa-comment-heart"></i> 想寫給另一半的今日小紙條 (選填)：</label>
+                <textarea id="resNote" placeholder="例如：今天下班想跟你去吃麵！或者：今天好累，回家想被抱抱..." rows="2" maxlength="100"></textarea>
+              </div>
+            </div>
+
+            <div class="result-actions">
+              <button class="primary-btn btn-pulse" id="btnSubmitMood">
+                <i class="fa-solid fa-cloud-arrow-up"></i> 儲存並同步給另一半！
+              </button>
+              <button class="secondary-btn" id="btnCancelResult">
+                放棄本次結果
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. SETTINGS VIEW -->
+      <section class="view-section hidden" id="viewSettings">
+        <div class="settings-card glass-card">
+          <div class="settings-header">
+            <h2><i class="fa-solid fa-gears text-primary animate-spin-hover"></i> 小樹屋設定中心</h2>
+            <p>在此設定與 Google Sheet 試算表的串接，實現即時雙向心情同步！</p>
+          </div>
+
+          <div class="settings-body">
+            <!-- API Setup Section -->
+            <div class="settings-group">
+              <h3><i class="fa-solid fa-link text-primary"></i> 1. 雲端同步串接 (Google Apps Script)</h3>
+              <p class="group-desc">請填入您在 Google Apps Script 部署網頁應用程式後獲得的 API 網址 (URL)。</p>
+              
+              <div class="input-wrapper">
+                <i class="fa-solid fa-server input-icon"></i>
+                <input type="text" id="settingsGasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+              </div>
+
+              <div class="api-btn-group">
+                <button class="primary-btn btn-sm" id="btnTestConnection">
+                  <i class="fa-solid fa-circle-nodes"></i> 測試雲端連線狀態
+                </button>
+                <span class="api-status-badge text-warning" id="apiStatusText">未設定連線</span>
+              </div>
+              
+              <div class="help-box">
+                <div class="help-title"><i class="fa-solid fa-circle-question"></i> 如何取得 API 網址？</div>
+                <ol>
+                  <li>點選下方按鈕下載或複製 <a href="google_apps_script.js" target="_blank" id="scriptLink">Google Apps Script 程式碼</a></li>
+                  <li>建立一個 Google 試算表，點選「擴充功能」->「Apps Script」貼上程式碼</li>
+                  <li>儲存並點選「部署」->「新增部署」，選取「網頁應用程式」，並設定存取權為「所有人」</li>
+                  <li>部署後複製產生的 URL 並貼到上方欄位，就大功告成囉！</li>
+                </ol>
+                <div class="help-actions">
+                  <button class="secondary-btn btn-xs" id="btnCopyScript">
+                    <i class="fa-solid fa-copy"></i> 複製 Google Apps Script 程式碼
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Customization Section -->
+            <div class="settings-group">
+              <h3><i class="fa-solid fa-user-pen text-primary"></i> 2. 稱謂與暱稱自訂</h3>
+              <div class="profile-inputs">
+                <div class="profile-input-item">
+                  <label class="input-label">老公暱稱：</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user-tie input-icon text-husband"></i>
+                    <input type="text" id="settingsHusbandName" placeholder="老公">
+                  </div>
+                </div>
+                <div class="profile-input-item">
+                  <label class="input-label">老婆暱稱：</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user-ninja input-icon text-wife"></i>
+                    <input type="text" id="settingsWifeName" placeholder="老婆">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger Zone Section -->
+            <div class="settings-group border-danger">
+              <h3><i class="fa-solid fa-triangle-exclamation text-danger"></i> 3. 系統重設</h3>
+              <p class="group-desc">清除保存在這台裝置上的所有本機快取與角色設定（不會刪除 Google 試算表中的歷史資料）。</p>
+              <button class="danger-btn btn-sm" id="btnClearCache">
+                <i class="fa-solid fa-trash-can"></i> 清除本機快取並重登
+              </button>
+            </div>
+          </div>
+
+          <div class="settings-footer">
+            <button class="primary-btn btn-sm" id="btnSaveSettings">
+              <i class="fa-solid fa-floppy-disk"></i> 儲存所有設定
+            </button>
+            <button class="secondary-btn btn-sm" id="btnBackToDashboard">
+              返回儀表板
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>Made with <i class="fa-solid fa-heart animate-pulse text-danger"></i> for our sweet daily life.</p>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
+</body>
+</html>

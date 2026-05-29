@@ -1,0 +1,1519 @@
+/* 
+ * 夫妻心情配對小樹屋 - 核心設計系統與樣式表
+ * 
+ * 設計概念：
+ * - 活潑、軟萌、療癒、浪漫
+ * - 採用毛玻璃效果 (Glassmorphism)、圓潤線條、馬卡龍雙色調
+ * - 全響應式 Mobile-First 排版，適應各種手機螢幕
+ */
+
+/* ==========================================================================
+   1. 全局變數與基礎設定
+   ========================================================================== */
+:root {
+  /* 配色系統 */
+  --primary-color: #FF7A90;      /* 暖粉色 */
+  --primary-hover: #FF5C78;
+  --secondary-color: #6C90FF;    /* 療癒藍 */
+  --secondary-hover: #4D7CFF;
+  
+  --bg-gradient: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+  --bg-dark-gradient: linear-gradient(135deg, #2b1055 0%, #7597de 100%);
+  
+  --husband-color: #6C90FF;
+  --wife-color: #FF7A90;
+  
+  --text-dark: #2C3E50;
+  --text-light: #7F8C8D;
+  --text-white: #FFFFFF;
+  
+  /* 指標配色 */
+  --color-energy: #FFB703;
+  --color-stress: #E63946;
+  --color-love: #FF4D6D;
+  
+  /* 毛玻璃面板基礎設定 */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-shadow: 0 12px 32px rgba(255, 122, 144, 0.08);
+  --glass-shadow-inner: inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  
+  /* 字體 */
+  --font-body: 'Noto Sans TC', sans-serif;
+  --font-display: 'Outfit', 'Noto Sans TC', sans-serif;
+  --font-handwriting: 'Pacifico', cursive;
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 消除瀏覽器預設樣式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* 手機點擊無高亮藍框 */
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. 背景漂浮動畫與全局容器
+   ========================================================================== */
+.floating-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floating-element {
+  position: absolute;
+  bottom: -100px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  animation: floatUp 15s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 122, 144, 0.2);
+  font-size: 1.5rem;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* 主要排版容器 */
+.app-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   3. 設計元件庫 (Buttons, Inputs, Cards)
+   ========================================================================== */
+/* 毛玻璃卡片 */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow), var(--glass-shadow-inner);
+  padding: 1.75rem;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(255, 122, 144, 0.12), var(--glass-shadow-inner);
+}
+
+/* 各種按鈕 */
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 50px;
+  transition: all var(--transition-bounce);
+}
+
+button:active {
+  transform: scale(0.92);
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #FF6B8B 100%);
+  color: var(--text-white);
+  padding: 0.85rem 1.85rem;
+  font-size: 1.05rem;
+  box-shadow: 0 8px 20px rgba(255, 122, 144, 0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(255, 122, 144, 0.4);
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(255, 122, 144, 0.4);
+  color: var(--primary-color);
+  padding: 0.85rem 1.85rem;
+  font-size: 1.05rem;
+}
+
+.secondary-btn:hover {
+  background: var(--primary-color);
+  color: var(--text-white);
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 15px rgba(255, 122, 144, 0.2);
+}
+
+.danger-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid rgba(230, 57, 70, 0.4);
+  color: var(--color-stress);
+  padding: 0.85rem 1.85rem;
+  font-size: 1.05rem;
+}
+
+.danger-btn:hover {
+  background: var(--color-stress);
+  color: var(--text-white);
+  border-color: var(--color-stress);
+  box-shadow: 0 6px 15px rgba(230, 57, 70, 0.2);
+}
+
+/* 實用尺寸按鈕 */
+.btn-sm {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+.btn-xs {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  border-radius: 8px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.icon-btn:hover {
+  background: var(--primary-color);
+  color: var(--text-white);
+  border-color: var(--primary-color);
+  transform: rotate(15deg) scale(1.08);
+}
+
+/* 呼吸脈搏動畫效果 */
+.btn-pulse {
+  animation: pulseButton 2s infinite;
+}
+
+@keyframes pulseButton {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 122, 144, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(255, 122, 144, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 122, 144, 0);
+  }
+}
+
+/* 輸入框設計 */
+.input-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.85rem;
+  border-radius: 50px;
+  border: 1.5px solid rgba(255, 122, 144, 0.25);
+  background: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+input[type="text"]:focus {
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 15px rgba(255, 122, 144, 0.1);
+}
+
+textarea {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border-radius: 16px;
+  border: 1.5px solid rgba(255, 122, 144, 0.25);
+  background: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  resize: none;
+  transition: all var(--transition-fast);
+}
+
+textarea:focus {
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 15px rgba(255, 122, 144, 0.1);
+}
+
+/* ==========================================================================
+   4. HEADER (頂部導覽列)
+   ========================================================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: transform var(--transition-bounce);
+}
+
+.header-logo:hover {
+  transform: scale(1.03);
+}
+
+.header-logo i {
+  font-size: 1.4rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   5. VIEW SECTIONS (視圖控制)
+   ========================================================================== */
+.view-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   6. 歡迎頁面 / 角色選擇 (WELCOME VIEW)
+   ========================================================================== */
+.welcome-card {
+  text-align: center;
+  max-width: 500px;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 20px 50px rgba(255, 122, 144, 0.12);
+}
+
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #FF6B8B 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1rem;
+  color: white;
+  font-size: 2.2rem;
+  box-shadow: 0 10px 25px rgba(255, 122, 144, 0.35);
+}
+
+.welcome-title {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.25rem;
+}
+
+.welcome-subtitle {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.step-card {
+  border-top: 1.5px dashed rgba(255, 122, 144, 0.2);
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.step-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.step-badge {
+  background: var(--primary-color);
+  color: white;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-family: var(--font-display);
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.role-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all var(--transition-bounce);
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+}
+
+.role-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  transition: transform var(--transition-bounce);
+}
+
+/* 老公角色樣式 */
+.role-icon-wrapper.husband {
+  background: rgba(108, 144, 255, 0.15);
+  color: var(--husband-color);
+}
+.role-card[data-role="husband"]:hover .role-icon-wrapper.husband {
+  transform: scale(1.1) rotate(-10deg);
+}
+
+/* 老婆角色樣式 */
+.role-icon-wrapper.wife {
+  background: rgba(255, 122, 144, 0.15);
+  color: var(--wife-color);
+}
+.role-card[data-role="wife"]:hover .role-icon-wrapper.wife {
+  transform: scale(1.1) rotate(10deg);
+}
+
+/* 被選中的角色樣式 */
+.role-card.selected[data-role="husband"] {
+  border-color: var(--husband-color);
+  background: rgba(108, 144, 255, 0.08);
+  box-shadow: 0 8px 20px rgba(108, 144, 255, 0.15);
+}
+.role-card.selected[data-role="wife"] {
+  border-color: var(--wife-color);
+  background: rgba(255, 122, 144, 0.08);
+  box-shadow: 0 8px 20px rgba(255, 122, 144, 0.15);
+}
+
+.role-label {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.nickname-group {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+#btnStartAdventure {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+/* ==========================================================================
+   7. 主儀表板頁面 (DASHBOARD VIEW)
+   ========================================================================== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid rgba(255, 122, 144, 0.15);
+  padding-bottom: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-header h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 50px;
+}
+
+.user-badge.own {
+  background: rgba(255, 122, 144, 0.15);
+  color: var(--primary-color);
+  border: 1px solid rgba(255, 122, 144, 0.25);
+}
+
+.user-badge.partner {
+  background: rgba(108, 144, 255, 0.15);
+  color: var(--secondary-color);
+  border: 1px solid rgba(108, 144, 255, 0.25);
+}
+
+/* 心情空白狀態 */
+.mood-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+}
+
+.cute-graphic {
+  width: 75px;
+  height: 75px;
+  background: rgba(255, 122, 144, 0.1);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.cute-graphic.asleep {
+  background: rgba(108, 144, 255, 0.1);
+  color: var(--secondary-color);
+}
+
+.mood-placeholder p {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.mood-placeholder .sub-text {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  max-width: 250px;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+/* 心情啟用狀態 */
+.mood-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.mood-emoji-large {
+  font-size: 3.5rem;
+  line-height: 1;
+  animation: bounceSlow 3s infinite ease-in-out;
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.mood-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-dark);
+}
+
+.mood-time {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* 指標條與百分比 */
+.meters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.meter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.meter-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.meter-bar {
+  height: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 50px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.1, 1, 0.1, 1);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.15);
+}
+
+.bg-energy {
+  background: linear-gradient(to right, #FFD166, var(--color-energy));
+}
+.bg-stress {
+  background: linear-gradient(to right, #FF758F, var(--color-stress));
+}
+.bg-love {
+  background: linear-gradient(to right, #FF758F, var(--color-love));
+}
+
+.text-energy { color: var(--color-energy); }
+.text-stress { color: var(--color-stress); }
+.text-love { color: var(--color-love); }
+.text-husband { color: var(--husband-color); }
+.text-wife { color: var(--wife-color); }
+
+/* 悄悄話區塊 */
+.whisper-box {
+  background: rgba(255, 255, 255, 0.7);
+  border-left: 4px solid var(--primary-color);
+  border-radius: 0 16px 16px 0;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.whisper-box.partner-whisper {
+  border-left-color: var(--secondary-color);
+}
+
+.whisper-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.whisper-box p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* 給另一半的互動小提示 */
+.recommendation-card {
+  background: linear-gradient(135deg, rgba(255, 122, 144, 0.08) 0%, rgba(108, 144, 255, 0.08) 100%);
+  border: 1.5px solid rgba(255, 122, 144, 0.15);
+  border-radius: 18px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.advice-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  margin-bottom: 0.35rem;
+}
+
+.advice-content {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.card-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding-top: 1rem;
+}
+
+/* ==========================================================================
+   8. 雲端同步與歷史牆 (SYNC & HISTORY)
+   ========================================================================== */
+.sync-actions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.last-sync-time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.history-card {
+  margin-top: 1rem;
+}
+
+.history-list-placeholder {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.history-list-placeholder i {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+.history-list-placeholder p {
+  font-size: 0.9rem;
+  max-width: 400px;
+}
+
+.history-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* 客製化滾動條 */
+.history-timeline::-webkit-scrollbar,
+.question-cards-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-timeline::-webkit-scrollbar-track,
+.question-cards-wrapper::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+}
+
+.history-timeline::-webkit-scrollbar-thumb,
+.question-cards-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 122, 144, 0.2);
+  border-radius: 10px;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform var(--transition-fast);
+}
+
+.history-item:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.history-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.history-role-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.history-role-avatar.husband {
+  background: rgba(108, 144, 255, 0.15);
+  color: var(--husband-color);
+}
+
+.history-role-avatar.wife {
+  background: rgba(255, 122, 144, 0.15);
+  color: var(--wife-color);
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-user-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.history-timestamp {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.history-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.history-mood-badge {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.history-note-indicator {
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 122, 144, 0.1);
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+}
+
+.history-note-indicator:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* ==========================================================================
+   9. 心理測驗區塊 (QUIZ VIEW)
+   ========================================================================== */
+.quiz-container {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(255, 122, 144, 0.1);
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px dashed rgba(255, 122, 144, 0.15);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn {
+  background: none;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding: 0.4rem 0.85rem;
+}
+
+.back-btn:hover {
+  color: var(--primary-color);
+}
+
+.quiz-progress-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex: 1;
+  max-width: 250px;
+}
+
+.quiz-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50px;
+  position: relative;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 50px;
+  width: 0%;
+  transition: width 0.4s cubic-bezier(0.1, 1, 0.1, 1);
+}
+
+.quiz-progress-heart {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  transition: left 0.4s cubic-bezier(0.1, 1, 0.1, 1);
+  animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.quiz-progress-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+/* 題目卡片動畫與切換 */
+.question-cards-wrapper {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.question-card {
+  width: 100%;
+  animation: cardSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@keyframes cardSlideIn {
+  0% { opacity: 0; transform: translateX(50px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+.question-card.slide-out {
+  animation: cardSlideOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+@keyframes cardSlideOut {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-50px); }
+}
+
+.question-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.5;
+  color: var(--text-dark);
+  padding: 0 1rem;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.option-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+  padding: 1rem 1.25rem;
+  width: 100%;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  justify-content: flex-start;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+  transition: all var(--transition-bounce);
+}
+
+.option-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 18px rgba(255, 122, 144, 0.08);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.option-emoji {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.option-btn:hover .option-emoji {
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* 心情計算中畫面 */
+.quiz-loading-screen, .loading-result-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  gap: 1.5rem;
+  min-height: 350px;
+}
+
+.loading-magic {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.spin-magic {
+  font-size: 3rem;
+  color: var(--primary-color);
+  animation: magicRotate 2s infinite linear;
+}
+
+@keyframes magicRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 1.2rem;
+  color: #FFB703;
+  opacity: 0;
+}
+
+.sparkle.s1 { top: 0; left: 0; animation: sparkleFloat 1.5s infinite 0.1s; }
+.sparkle.s2 { top: 10px; right: 0; color: #FF4D6D; animation: sparkleFloat 1.8s infinite 0.5s; }
+.sparkle.s3 { bottom: 0; left: 20px; animation: sparkleFloat 1.2s infinite 0.9s; }
+
+@keyframes sparkleFloat {
+  0% { transform: scale(0) translate(0, 0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: scale(1.3) translate(var(--tx, 15px), var(--ty, -15px)); opacity: 0; }
+}
+.sparkle.s1 { --tx: -20px; --ty: -20px; }
+.sparkle.s2 { --tx: 25px; --ty: -20px; }
+.sparkle.s3 { --tx: 5px; --ty: 20px; }
+
+/* 測驗結果呈現 */
+.result-card-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: cardSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+}
+
+.result-greet {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  animation: bounceSlow 3s infinite ease-in-out;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid white;
+  border-radius: 20px;
+  padding: 1.75rem 1.25rem;
+  box-shadow: 0 10px 25px rgba(255, 122, 144, 0.05);
+}
+
+.result-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  animation: bounceSlow 2s infinite ease-in-out;
+}
+
+.result-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.result-desc {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  padding: 0 0.5rem;
+}
+
+.result-note-area {
+  border-top: 1.5px dashed rgba(255, 122, 144, 0.15);
+  padding-top: 1.25rem;
+  margin-top: 1rem;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .result-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .result-actions button {
+    flex: 1;
+  }
+}
+
+/* ==========================================================================
+   10. 設定中心頁面 (SETTINGS VIEW)
+   ========================================================================== */
+.settings-card {
+  max-width: 650px;
+  margin: 1rem auto;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+.settings-header {
+  border-bottom: 1.5px solid rgba(255, 122, 144, 0.15);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.settings-header h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-header p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 1.5rem;
+}
+
+.settings-group:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-group h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.group-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.api-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.api-status-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.text-warning { color: #E28743; }
+.text-success { color: #2EC4B6; }
+
+/* 幫助說明區塊 */
+.help-box {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.help-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.help-box ol {
+  padding-left: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.help-box ol a {
+  color: var(--primary-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.help-box ol a:hover {
+  text-decoration: underline;
+}
+
+/* 暱稱自訂 */
+.profile-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 480px) {
+  .profile-inputs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.profile-input-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 危險區域紅框 */
+.border-danger {
+  border-color: rgba(230, 57, 70, 0.15);
+  background: rgba(230, 57, 70, 0.01);
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.settings-footer {
+  border-top: 1.5px solid rgba(255, 122, 144, 0.15);
+  padding-top: 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   11. TOAST 提示與頁尾 (TOAST & FOOTER)
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+  width: 90%;
+  max-width: 320px;
+}
+
+.toast {
+  background: rgba(44, 62, 80, 0.95);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: toastFadeIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes toastFadeIn {
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.toast.toast-success {
+  background: rgba(46, 196, 182, 0.95);
+}
+.toast.toast-error {
+  background: rgba(230, 57, 70, 0.95);
+}
+
+.toast.fade-out {
+  animation: toastFadeOut 0.3s forwards;
+}
+
+@keyframes toastFadeOut {
+  100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+}
+
+/* 頁尾 */
+.app-footer {
+  margin-top: auto;
+  padding: 2rem 0 1rem;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.app-footer i {
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   12. 全局動畫效果 (GLOBAL ANIMATIONS)
+   ========================================================================== */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 0.6s cubic-bezier(0.1, 1, 0.1, 1) forwards;
+  animation-delay: calc(var(--delay, 1) * 0.1s);
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 3s infinite ease-in-out;
+}
+
+.animate-spin-hover:hover i {
+  animation: spin 0.8s ease-in-out;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   13. 碎紙屑撒花與敲敲門抖動動畫 (CONFETTI & SHAKE)
+   ========================================================================== */
+.confetti-explosion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  border-radius: 3px;
+  animation: fallConfetti 2.5s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+}
+
+.confetti-piece.circle {
+  border-radius: 50%;
+}
+
+.confetti-piece.heart {
+  background: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confetti-piece.heart::before {
+  content: '❤️';
+  font-size: 1rem;
+}
+
+@keyframes fallConfetti {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(80px) rotate(45deg) scale(1.3);
+  }
+  100% {
+    transform: translateY(400px) rotate(360deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  15%, 45%, 75% { transform: translate(-4px, 0) rotate(-6deg); }
+  30%, 60%, 90% { transform: translate(4px, 0) rotate(6deg); }
+}
+

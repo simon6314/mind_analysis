@@ -409,6 +409,11 @@ document.addEventListener("DOMContentLoaded", () => {
   registerEventListeners();
   renderAppView();
   
+  // 網頁載入時，若已登入則自動進行一次靜默背景同步，確保取得最新狀態
+  if (APP_STATE.role && APP_STATE.gasUrl) {
+    syncCloudData(true);
+  }
+  
   // 定時輪詢（若有設定 GAS API，每 60 秒自動同步一次另一半心情）
   setInterval(() => {
     if (APP_STATE.gasUrl) {
@@ -479,8 +484,8 @@ function loadLocalStorage() {
   if (savedOwnMood) {
     try {
       const parsed = JSON.parse(savedOwnMood);
-      // 檢查是否為「今天」的紀錄
-      if (parsed.date === getTodayDateString()) {
+      // 檢查是否為「今天」的紀錄 (比對 timestamp 或 date 字串以防時區轉換落差)
+      if (isToday(parsed.timestamp) || parsed.date === getTodayDateString()) {
         APP_STATE.ownTodayMood = parsed;
       } else {
         localStorage.removeItem("treehouse_own_mood_today");
@@ -495,8 +500,10 @@ function loadLocalStorage() {
   if (savedPartnerMood) {
     try {
       const parsed = JSON.parse(savedPartnerMood);
-      if (parsed.date === getTodayDateString()) {
+      if (isToday(parsed.timestamp) || parsed.date === getTodayDateString()) {
         APP_STATE.partnerTodayMood = parsed;
+      } else {
+        localStorage.removeItem("treehouse_partner_mood_today");
       }
     } catch (e) {
       console.error(e);
@@ -977,7 +984,7 @@ function syncCloudData(isSilent = false) {
       
       // 1. 更新另一半的今日心情
       const partnerLatest = data.latest[partnerRole];
-      if (partnerLatest && partnerLatest.date === getTodayDateString()) {
+      if (partnerLatest && (isToday(partnerLatest.timestamp) || partnerLatest.date === getTodayDateString())) {
         const prevPartnerMood = localStorage.getItem("treehouse_partner_mood_today");
         const nextPartnerMoodStr = JSON.stringify(partnerLatest);
         
@@ -998,7 +1005,7 @@ function syncCloudData(isSilent = false) {
       
       // 2. 備份自己的今日心情到雲端資料（若本地被清除，可反向同步回來）
       const ownLatest = data.latest[ownRole];
-      if (ownLatest && ownLatest.date === getTodayDateString() && !APP_STATE.ownTodayMood) {
+      if (ownLatest && (isToday(ownLatest.timestamp) || ownLatest.date === getTodayDateString()) && !APP_STATE.ownTodayMood) {
         APP_STATE.ownTodayMood = ownLatest;
         localStorage.setItem("treehouse_own_mood_today", JSON.stringify(ownLatest));
         isDataUpdated = true;
@@ -1225,6 +1232,16 @@ function getTodayDateString() {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+// 判斷 ISO 時間戳記是否為本地時間的「今天」 (避免 Google Apps Script 執行環境時區造成一日落差)
+function isToday(timestamp) {
+  if (!timestamp) return false;
+  const d = new Date(timestamp);
+  const now = new Date();
+  return d.getDate() === now.getDate() &&
+         d.getMonth() === now.getMonth() &&
+         d.getFullYear() === now.getFullYear();
+}
+
 // 格式化時間差 (例如：剛剛, 5分鐘前, 3小時前, 昨天...)
 function formatTimeDiff(isoString) {
   if (!isoString) return "";
@@ -1285,11 +1302,15 @@ function registerEventListeners() {
     localStorage.setItem("treehouse_nickname", nickname);
     APP_STATE.nickname = nickname;
     
+    // 保存當前運行的 GAS URL 到本機，避免清除快取重登後無法同步
+    if (APP_STATE.gasUrl) {
+      localStorage.setItem("treehouse_gas_url", APP_STATE.gasUrl);
+    }
+    
     showToast(`歡迎進入心情小樹屋，${nickname}！✨`, "success");
     
-    // 若本機有 GAS URL 則自動拉取資料，否則直接進 Dashboard
-    if (localStorage.getItem("treehouse_gas_url")) {
-      APP_STATE.gasUrl = localStorage.getItem("treehouse_gas_url");
+    // 若有設定 GAS URL 則自動拉取資料，否則直接進 Dashboard
+    if (APP_STATE.gasUrl) {
       syncCloudData();
     }
     

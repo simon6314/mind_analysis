@@ -527,7 +527,7 @@ const QUIZ_POOL = [
     options: [
       { text: "悄悄跟在另一半後面，在他/她認真工作時突然抱住他/她嚇一跳！", emoji: "👻", scores: { energy: 45, stress: -15, loveIndex: 45 } },
       { text: "溜進高級甜點店，把櫥窗裡平時捨不得買的蛋糕全部試吃一遍！", emoji: "🍰", scores: { energy: 40, stress: -25, loveIndex: 10 } },
-      { text: "偷偷躲在角落观察另一半在沒有我時到底會做些什麼傻事", emoji: "🕵️‍♂️", scores: { energy: 20, stress: 15, loveIndex: 30 } },
+      { text: "偷偷躲在角落觀察另一半在沒有我時到底會做些什麼傻事", emoji: "🕵️‍♂️", scores: { energy: 20, stress: 15, loveIndex: 30 } },
       { text: "關掉手機，躲在房間的魔法角落，無憂無慮地安靜放空一小時", emoji: "🧘‍♂️", scores: { energy: -30, stress: -35, loveIndex: 10 } }
     ]
   },

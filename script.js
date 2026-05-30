@@ -995,6 +995,7 @@ function renderDashboard() {
   
   // 更新角色的標章稱謂
   document.getElementById("myRoleBadge").innerText = `${ownTitle} (${APP_STATE.nickname || "自己"})`;
+    // 儀表板初次渲染：不寫死另一半的暱稱，若已取得今日心情則由下方動態更新
   document.getElementById("partnerRoleBadge").innerText = partnerTitle;
   
   // 1. 渲染自己的狀態
@@ -1033,6 +1034,7 @@ function renderDashboard() {
     partnerActive.classList.remove("hidden");
     
     const mood = APP_STATE.partnerTodayMood;
+    document.getElementById("partnerRoleBadge").innerText = `${partnerTitle} (${mood.nickname || "另一半"})`;
     document.getElementById("partnerMoodEmoji").innerText = mood.moodEmoji;
     document.getElementById("partnerMoodName").innerText = mood.moodName;
     document.getElementById("partnerMoodTime").innerText = formatTimeDiff(mood.timestamp);
@@ -1051,6 +1053,7 @@ function renderDashboard() {
   } else {
     partnerEmpty.classList.remove("hidden");
     partnerActive.classList.add("hidden");
+    document.getElementById("partnerRoleBadge").innerText = partnerTitle;
   }
   
   // 3. 渲染歷史紀錄牆
@@ -1160,7 +1163,9 @@ function renderQuestionCard() {
   const optionsList = document.createElement("div");
   optionsList.className = "options-list";
   
-  q.options.forEach((opt) => {
+  const shuffledOpts = [...q.options];
+  shuffleArray(shuffledOpts);
+  shuffledOpts.forEach((opt) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
     
@@ -1235,7 +1240,7 @@ function calculateQuizResult() {
     resultScr.classList.remove("hidden");
     playSound('success');
     
-    // 心情分數累計（基底為50，並乘以係數以平衡答題數）
+    // 心情分數累計
     let energySum = 0;
     let stressSum = 0;
     let loveSum = 0;
@@ -1246,45 +1251,43 @@ function calculateQuizResult() {
       loveSum += ans.scores.loveIndex;
     });
     
-    const scale = 3.0 / APP_STATE.quizQuestions.length; // 將分數縮放至原本 3 題的強度
-    const energy = Math.max(5, Math.min(100, Math.round(50 + energySum * scale)));
-    const stress = Math.max(5, Math.min(100, Math.round(50 + stressSum * scale)));
-    const loveIndex = Math.max(5, Math.min(100, Math.round(50 + loveSum * scale)));
+    // 平衡分數計算：扣除預期之正面/負面平均偏移，使其均勻分布在 50% 周圍
+    const energy = Math.max(5, Math.min(100, Math.round(50 + (energySum - 20) * 0.45)));
+    const stress = Math.max(5, Math.min(100, Math.round(50 + (stressSum + 25) * 0.45)));
+    const loveIndex = Math.max(5, Math.min(100, Math.round(50 + (loveSum - 70) * 0.45)));
     
-    // 心情判定邏輯樹
-        // 15種心情判定邏輯樹 (energy, stress, loveIndex 判定)
+    // 3D 心情標準特徵向量空間定義 (活力值, 壓力值, 黏人指數)
+    const MOOD_PROFILES = {
+      EXPLODING: { energy: 15, stress: 90, loveIndex: 20 },
+      GRUMPY: { energy: 75, stress: 80, loveIndex: 30 },
+      NEED_HUG: { energy: 20, stress: 35, loveIndex: 90 },
+      TIRED: { energy: 15, stress: 65, loveIndex: 40 },
+      HAPPY_SWEET: { energy: 85, stress: 15, loveIndex: 95 },
+      ENERGY_FULL: { energy: 95, stress: 15, loveIndex: 60 },
+      CALM: { energy: 50, stress: 15, loveIndex: 50 },
+      MELTING: { energy: 10, stress: 10, loveIndex: 30 },
+      DRAMATIC: { energy: 75, stress: 70, loveIndex: 80 },
+      FOODIE_MONSTER: { energy: 70, stress: 55, loveIndex: 20 },
+      SPOILEE: { energy: 45, stress: 45, loveIndex: 85 },
+      GHOSTING: { energy: 25, stress: 20, loveIndex: 40 },
+      ADVENTURER: { energy: 90, stress: 20, loveIndex: 80 },
+      OVERWORKED: { energy: 25, stress: 80, loveIndex: 75 },
+      SHY_LOVER: { energy: 35, stress: 20, loveIndex: 75 }
+    };
+    
+    // 歐幾里得距離匹配演算法 (尋找 3D 空間中最契合的今日心情特徵)
     let moodKey = "CALM";
+    let minDistance = Infinity;
     
-    if (stress > 70) {
-      if (energy < 40) {
-        moodKey = loveIndex > 65 ? "OVERWORKED" : "EXPLODING";
-      } else {
-        moodKey = loveIndex > 65 ? "DRAMATIC" : "GRUMPY";
-      }
-    } else if (energy < 40) {
-      if (loveIndex > 70) {
-        moodKey = "NEED_HUG";
-      } else if (loveIndex < 35) {
-        moodKey = "MELTING";
-      } else {
-        moodKey = stress > 50 ? "TIRED" : "GHOSTING";
-      }
-    } else if (energy > 75) {
-      if (loveIndex > 75) {
-        moodKey = "HAPPY_SWEET";
-      } else if (loveIndex < 40) {
-        moodKey = "FOODIE_MONSTER";
-      } else {
-        moodKey = "ENERGY_FULL";
-      }
-    } else {
-      // 中度區間
-      if (loveIndex > 75) {
-        moodKey = energy > 55 ? "ADVENTURER" : "SPOILEE";
-      } else if (loveIndex > 55) {
-        moodKey = "SHY_LOVER";
-      } else {
-        moodKey = "CALM";
+    for (const [key, profile] of Object.entries(MOOD_PROFILES)) {
+      const dist = Math.sqrt(
+        Math.pow(energy - profile.energy, 2) +
+        Math.pow(stress - profile.stress, 2) +
+        Math.pow(loveIndex - profile.loveIndex, 2)
+      );
+      if (dist < minDistance) {
+        minDistance = dist;
+        moodKey = key;
       }
     }
     
@@ -1325,6 +1328,7 @@ function submitQuizResult() {
   const noteInput = document.getElementById("resNote").value.trim();
   const finalMoodData = {
     ...APP_STATE.pendingResult,
+    nickname: APP_STATE.nickname,
     note: noteInput,
     timestamp: new Date().toISOString()
   };
@@ -1380,7 +1384,11 @@ function syncCloudData(isSilent = false) {
     syncBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i> 同步中...`;
   }
   
-  fetch(APP_STATE.gasUrl)
+  // 動態拼接當前時間戳記做為 Cache Buster，防範瀏覽器快取 API 數據
+  const timestampBuster = `_t=${new Date().getTime()}`;
+  const syncUrl = APP_STATE.gasUrl + (APP_STATE.gasUrl.includes('?') ? '&' : '?') + timestampBuster;
+  
+  fetch(syncUrl)
   .then(res => {
     if (!res.ok) throw new Error("Network response was not ok");
     return res.json();
@@ -1475,7 +1483,11 @@ function testApiConnection() {
   statusBadge.className = "api-status-badge text-warning";
   statusBadge.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 正在連線測試...`;
   
-  fetch(url)
+  // 動態拼接 Cache Buster，防範測試 API 時的快取干擾
+  const timestampBuster = `_t=${new Date().getTime()}`;
+  const testUrl = url + (url.includes('?') ? '&' : '?') + timestampBuster;
+  
+  fetch(testUrl)
   .then(res => {
     if (!res.ok) throw new Error();
     return res.json();

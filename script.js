@@ -1340,19 +1340,25 @@ function submitQuizResult() {
   if (APP_STATE.gasUrl) {
     showToast("小精靈：正在將您的心情送上雲端... ☁️", "info");
     
-    // 使用 text/plain 以避免 preflight OPTIONS 跨域攔截
+    // 使用 CORS 發送 simple POST 請求（Content-Type: text/plain 不會觸發 preflight），以正確追隨 Google 重導向並遞送 Body
     fetch(APP_STATE.gasUrl, {
       method: "POST",
-      mode: "no-cors", // 即使 no-cors，資料依然會送達 Google 試算表，此為靜態頁面神技
       headers: {
         "Content-Type": "text/plain"
       },
       body: JSON.stringify(finalMoodData)
     })
-    .then(() => {
-      showToast("雲端同步成功！另一半只要開啟網頁就能看到囉！💖", "success");
-      // 隨後主動拉取一次最新資料
-      syncCloudData();
+    .then(res => {
+      if (!res.ok) throw new Error("Network response was not ok");
+      return res.json();
+    })
+    .then(data => {
+      if (data.status === "success") {
+        showToast("雲端同步成功！另一半只要開啟網頁就能看到囉！💖", "success");
+        syncCloudData();
+      } else {
+        throw new Error(data.message || "GAS write error");
+      }
     })
     .catch((err) => {
       console.error("Cloud post error:", err);
